@@ -54,7 +54,7 @@ jobs:
         buildozer init || true
         sed -i 's/#android.accept_sdk_license = False/android.accept_sdk_license = True/' buildozer.spec
         # Configure pour utiliser pygame et python3
-        sed -i 's/#requirements = python3,kivy/requirements = python3,pygame/' buildozer.spec
+        sed -i 's/#android.accept_sdk_license = False/android.accept_sdk_license = True/g' buildozer.spec
         sed -i 's/#package.name = myapp/package.name = jascoserpent/' buildozer.spec
         sed -i 's/#package.domain = org.example/package.domain = org.jasco/' buildozer.spec
         sed -i 's/#title = My Application/title = JASCO SERPENT/' buildozer.spec
