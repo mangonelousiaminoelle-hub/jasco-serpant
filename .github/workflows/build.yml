@@ -51,16 +51,18 @@ jobs:
     - name: Initialize Buildozer config
       run: |
         buildozer init || true
-        # On nettoie d'abord toute ancienne ligne de licence pour éviter les doublons
         sed -i '/android.accept_sdk_license/d' buildozer.spec
-        # On l'ajoute proprement une seule fois
         echo "android.accept_sdk_license = True" >> buildozer.spec
+        
+        # On force une version stable (API 33) qui évite les erreurs de build-tools
+        sed -i 's/#\?android.api =.*/android.api = 33/' buildozer.spec
+        sed -i 's/#\?android.minapi =.*/android.minapi = 21/' buildozer.spec
+        sed -i 's/#\?android.sdk =.*/android.sdk = 33/' buildozer.spec
         
         sed -i 's/#\?requirements =.*/requirements = python3,kivy,pygame/' buildozer.spec
         sed -i 's/#\?package.name =.*/package.name = jascoserpent/' buildozer.spec
         sed -i 's/#\?package.domain =.*/package.domain = org.jasco/' buildozer.spec
         sed -i 's/#\?title =.*/title = JASCO SERPENT/' buildozer.spec
-
     - name: Build APK with Buildozer
       run: buildozer -v android debug
         
