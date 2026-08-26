@@ -59,6 +59,7 @@ jobs:
         sed -i 's/#\?package.name =.*/package.name = jascoserpent/' buildozer.spec
         sed -i 's/#\?package.domain =.*/package.domain = org.jasco/' buildozer.spec
         sed -i 's/#\?title =.*/title = JASCO SERPENT/' buildozer.spec
+        
     - name: Build APK with Buildozer
       run: buildozer -v android debug
 
