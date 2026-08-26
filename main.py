@@ -628,4 +628,4 @@ class JeuDuSerpentSpatialeHD:
 
 if __name__ == "__main__":
     jeu = JeuDuSerpentSpatialeHD()
-    jeu.run()
+    jeu.run() 
