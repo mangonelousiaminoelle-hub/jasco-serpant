@@ -1,7 +1,10 @@
+name: Build Android APK
+
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,43 +21,40 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-            python3-pip \
-            build-essential \
-            git \
-            python3-dev \
-            ffmpeg \
-            libsdl2-dev \
-            libsdl2-image-dev \
-            libsdl2-mixer-dev \
-            libsdl2-ttf-dev \
-            libportmidi-dev \
-            libswscale-dev \
-            libavformat-dev \
-            libavcodec-dev \
-            zlib1g-dev \
-            libgstreamer1.0-dev \
-            gstreamer1.0-plugins-base \
-            gstreamer1.0-plugins-good \
-            zip \
-            unzip \
-            autoconf \
-            libtool \
-            pkg-config \
-            libncurses5-dev \
-            libstdc++6 \
-            libglu1-mesa-dev \
-            openjdk-17-jdk
+          python3-pip \
+          build-essential \
+          git \
+          python3-dev \
+          ffmpeg \
+          libsdl2-dev \
+          libsdl2-image-dev \
+          libsdl2-mixer-dev \
+          libsdl2-ttf-dev \
+          libportmidi-dev \
+          libswscale-dev \
+          libavformat-dev \
+          libavcodec-dev \
+          zlib1g-dev \
+          libgstreamer1.0-dev \
+          gstreamer1.0-plugins-base \
+          gstreamer1.0-plugins-good \
+          libstdc++6 \
+          openjdk-17-jdk \
+          unzip \
+          zip \
+          autoconf \
+          libtool \
+          pkg-config
 
     - name: Install Buildozer
-      run: pip install --user --upgrade buildozer
+      run: pip install --user --upgrade buildozer cython==0.29.33
 
     - name: Initialize Buildozer config
       run: |
         buildozer init || true
-        sed -i '/android.accept_sdk_license/d' buildozer.spec
-        echo "android.accept_sdk_license = True" >> buildozer.spec
         
-        # On force une version stable (API 33) qui évite les erreurs de build-tools
+        # Force l'acceptation des licences et l'API stable pour éviter le blocage aidl
+        sed -i 's/#\?android.accept_sdk_license.*/android.accept_sdk_license = True/' buildozer.spec
         sed -i 's/#\?android.api =.*/android.api = 33/' buildozer.spec
         sed -i 's/#\?android.minapi =.*/android.minapi = 21/' buildozer.spec
         sed -i 's/#\?android.sdk =.*/android.sdk = 33/' buildozer.spec
@@ -63,9 +63,7 @@ jobs:
         sed -i 's/#\?package.name =.*/package.name = jascoserpent/' buildozer.spec
         sed -i 's/#\?package.domain =.*/package.domain = org.jasco/' buildozer.spec
         sed -i 's/#\?title =.*/title = JASCO SERPENT/' buildozer.spec
-    - name: Build APK with Buildozer
-      run: buildozer -v android debug
-        
+
     - name: Build APK with Buildozer
       run: buildozer -v android debug
 
